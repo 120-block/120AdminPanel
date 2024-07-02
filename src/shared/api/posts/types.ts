@@ -3,6 +3,7 @@ export interface Post {
     id: number;
     user_id: number;
     control: boolean;
+    check: boolean;
     balance_sheet_id: string;
     tag_id: string;
     link: string;
