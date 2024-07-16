@@ -3,15 +3,6 @@ import axios from 'axios';
 import PostCard from "@/widgets/PostCard/ui/postCard";
 import {PostsProps} from './types';
 
-interface postCardProps {
-    key: number;
-    user: string;
-    usersAvatar: string;
-    postsAwardInBP: number;
-    postsDescription: string;
-    postsImage: string;
-}
-
 const Posts: React.FC<PostsProps> = ({posts, error}) => {
     if (error) {
         return <div>{error}</div>;
@@ -25,7 +16,7 @@ const Posts: React.FC<PostsProps> = ({posts, error}) => {
         <>
             {posts.map(post => (
                 <PostCard
-                    key={post.id}
+                    post_id={post.id}
                     user={`${post.username}`}
                     usersAvatar={post.profile_photo}
                     postsAwardInBP={5341}
