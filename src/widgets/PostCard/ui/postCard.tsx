@@ -29,11 +29,6 @@ const PostCard = ({
 
     const handleReject = async () => {
         setLocalCheck(true);
-
-        // const postData = {
-        //     post_id: post_id,
-        //     check: true,
-        // };
         console.log('post_id:', post_id, 'check:', localCheck)
         try {
             const response = await axios.post('https://120-server.vercel.app/api/post/update', {
