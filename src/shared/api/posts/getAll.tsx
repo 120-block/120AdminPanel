@@ -3,6 +3,15 @@ import axios from 'axios';
 import PostCard from "@/widgets/PostCard/ui/postCard";
 import {PostsProps} from './types';
 
+interface postCardProps {
+    key: number;
+    user: string;
+    usersAvatar: string;
+    postsAwardInBP: number;
+    postsDescription: string;
+    postsImage: string;
+}
+
 const Posts: React.FC<PostsProps> = ({posts, error}) => {
     if (error) {
         return <div>{error}</div>;
