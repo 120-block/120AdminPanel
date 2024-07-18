@@ -1,8 +1,5 @@
-import Accept from "@/shared/api/buttons/Accept";
-import Reject from "@/shared/api/buttons/Reject";
-import React, {useState} from 'react';
+import React from 'react';
 import axios from "axios";
-import {useRouter} from "next/router";
 
 type postCardProps = {
     post_id: number;
@@ -12,62 +9,45 @@ type postCardProps = {
     postsImage: string;
     control: boolean;
     check: boolean;
+    refreshPosts: () => void;
 };
 
-const PostCard = ({
-                      post_id,
-                      user,
-                      usersAvatar,
-                      postsDescription,
-                      postsImage,
-                      control: propControl,
-                      check: propCheck
-                  }: postCardProps) => {
-    const router = useRouter();
-    const [localCheck, setLocalCheck] = useState(propCheck);
-    const [localControl, setLocalControl] = useState(propControl);
+const PostCard: React.FC<postCardProps> = ({
+                                               post_id,
+                                               user,
+                                               usersAvatar,
+                                               postsDescription,
+                                               postsImage,
+                                               refreshPosts
+                                           }) => {
 
     const handleReject = async () => {
-        setLocalCheck(true);
-        console.log('post_id:', post_id, 'check:', localCheck)
         try {
-            const response = await axios.post('https://120-server.vercel.app/api/post/update', {
+            await axios.post('https://120-server.vercel.app/api/post/update', {
                 post_id: post_id,
-                check: localCheck
+                check: true,
+                control_id: false
             });
             console.log('Post updated successfully');
+            refreshPosts();
         } catch (error) {
             console.error('Error updating post:', error);
         }
     };
 
-    // const handleAccept = async () => {
-    //     setLocalCheck(true);
-    //     setLocalControl(true);
-    //
-    //     const postData = {
-    //         check: true,
-    //         control: true,
-    //     };
-    //
-    //     try {
-    //         const response = await axios.post('https://95.163.231.244:3000/api/post/update', {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(postData),
-    //         });
-    //
-    //         if (!response) {
-    //             throw new Error('Failed to update the post');
-    //         }
-    //
-    //         console.log('Post updated successfully');
-    //     } catch (error) {
-    //         console.error('Error updating post:', error);
-    //     }
-    // };
-
+    const handleAccept = async () => {
+        try {
+            await axios.post('https://120-server.vercel.app/api/post/update', {
+                post_id: post_id,
+                check: true,
+                control_id: true
+            });
+            console.log('Post updated successfully');
+            refreshPosts();
+        } catch (error) {
+            console.error('Error updating post:', error);
+        }
+    };
 
     return (
         <div className="max-w-[389px] w-full rounded-[14px] bg-white flex flex-col gap-y-0.5">
@@ -75,6 +55,7 @@ const PostCard = ({
                 <img
                     src={usersAvatar}
                     className="size-[38px] rounded-full"
+                    alt={'avatar'}
                 />
                 <div className="flex flex-col">
                     <p className="text-secondarybody text-black">{user}</p>
@@ -83,9 +64,9 @@ const PostCard = ({
                     </p>
                 </div>
                 <div className="ml-auto pr-[12px]">
-                    {/*<button className="mr-2 text-green-500" onClick={handleAccept}>*/}
-                    {/*    accept*/}
-                    {/*</button>*/}
+                    <button className="mr-2 text-green-500" onClick={handleAccept}>
+                        accept
+                    </button>
                     <button className="text-red-500" onClick={handleReject}>
                         reject
                     </button>
@@ -94,6 +75,7 @@ const PostCard = ({
             <img
                 src={postsImage}
                 className="w-full aspect-square rounded-b-[14px]"
+                alt={'post'}
             />
         </div>
     );

@@ -1,5 +1,5 @@
 export interface Post {
-    key: number;
+    post_id: number;
     id: number;
     user_id: number;
     control: boolean;
